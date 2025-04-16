@@ -1,5 +1,7 @@
 package kr.hhplus.be.point;
 
+import kr.hhplus.be.point.entity.Point;
+import kr.hhplus.be.point.entity.PointHistory;
 import kr.hhplus.be.point.repository.PointHistoryRepository;
 import kr.hhplus.be.point.repository.PointRepository;
 import org.springframework.stereotype.Service;

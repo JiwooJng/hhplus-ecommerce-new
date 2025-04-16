@@ -1,6 +1,6 @@
 package kr.hhplus.be.point.repository;
 
-import kr.hhplus.be.point.Point;
+import kr.hhplus.be.point.entity.Point;
 
 public interface PointRepository {
     Point findById(Long userId);

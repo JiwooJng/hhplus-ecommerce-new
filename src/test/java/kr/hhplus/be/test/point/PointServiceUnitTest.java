@@ -1,11 +1,10 @@
 package kr.hhplus.be.test.point;
 
-import kr.hhplus.be.point.Point;
+import kr.hhplus.be.point.entity.Point;
 import kr.hhplus.be.point.repository.PointHistoryRepository;
 import kr.hhplus.be.point.repository.PointRepository;
 import kr.hhplus.be.point.PointService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,7 +1,8 @@
-package kr.hhplus.be.point;
+package kr.hhplus.be.point.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import kr.hhplus.be.point.TransactionType;
 
 import java.time.LocalDateTime;
 
