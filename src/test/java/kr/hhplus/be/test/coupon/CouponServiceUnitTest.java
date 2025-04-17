@@ -71,9 +71,11 @@ class CouponServiceUnitTest {
         when(userCouponRepository.findById(userId, couponId))
                 .thenReturn(userCoupon);
         // when
-        boolean result = couponService.use(userId, couponId);
+        couponService.use(userId, couponId);
         // then
-        Assertions.assertTrue(result);
+        assert !userCoupon.canUse();
+        verify(userCouponRepository).delete(any(UserCoupon.class));
+
 
     }
 

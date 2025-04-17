@@ -29,7 +29,7 @@ public class CouponService {
         couponRepository.save(coupon);
     }
 
-    public boolean isExist(Long couponId) {
+    public Coupon isExist(Long couponId) {
         // 쿠폰 존재 여부 확인
         return couponRepository.checkExistById(couponId);
     }
@@ -50,19 +50,19 @@ public class CouponService {
         return userCouponRepository.save(new UserCoupon(user, coupon)); // 쿠폰 발급 및 저장
     }
 
-    public Coupon use(Long userId, Long couponId) {
+    public boolean use(Long userId, Long couponId) {
         // 쿠폰 사용 로직
         UserCoupon userCoupon = userCouponRepository.findById(userId, couponId);
-        Coupon coupon = couponRepository.findById(couponId);
         if (userCoupon == null) {
-            throw new IllegalArgumentException("존재하지 않는 쿠폰입니다.");
+            return false; // 쿠폰이 존재하지 않음
         }
 
         if (!userCoupon.canUse()) { // true 면 사용 가능, false 면 사용 불가
-            throw new RuntimeException("이미 사용한 쿠폰입니다.");
+            return false; // 쿠폰 사용 불가
         }
         userCoupon.use(); // 쿠폰 사용 처리
-        return coupon; // 쿠폰 사용 성공
+        userCouponRepository.delete(userCoupon); // 사용한 쿠폰 삭제
+        return true; // 쿠폰 사용 성공
     }
 
 }

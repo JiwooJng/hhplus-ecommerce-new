@@ -3,6 +3,7 @@ package kr.hhplus.be;
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.coupon.CouponService;
 import kr.hhplus.be.coupon.entity.Coupon;
+import kr.hhplus.be.coupon.entity.UserCoupon;
 import kr.hhplus.be.order.OrderService;
 import kr.hhplus.be.order.entity.Order;
 import kr.hhplus.be.product.ProductService;
@@ -52,10 +53,12 @@ public class OrderFacade {
         BigDecimal finalPrice = totalPrice;
         // 쿠폰 적용 시
         if (couponId != null) {
-            if (!couponService.isExist(couponId)) {
+            Coupon coupon = couponService.isExist(couponId);
+            if (coupon == null) {
                 throw new IllegalArgumentException("쿠폰이 존재하지 않습니다.");
             }
-            Coupon coupon = couponService.use(userId, couponId);
+            orderService.applyCoupon(order, coupon);
+            couponService.use(userId, couponId);
             finalPrice = orderService.applyCoupon(order, coupon); // 쿠폰 할인 금액 적용 후 최종 가격
         }
 

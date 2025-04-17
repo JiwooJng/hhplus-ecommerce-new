@@ -7,5 +7,5 @@ public interface CouponRepository {
     Coupon findById(Long couponId);
     Coupon save(Coupon coupon);
 
-    boolean checkExistById(Long couponId);
+    Coupon checkExistById(Long couponId);
 }
