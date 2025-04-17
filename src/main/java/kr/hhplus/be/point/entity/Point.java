@@ -1,25 +1,37 @@
 package kr.hhplus.be.point.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import kr.hhplus.be.user.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Entity
 public class Point {
     @Id @GeneratedValue
     private Long id;
-    private Long userId;
+
+    @OneToOne
+    private User user;
     private BigDecimal point;
     private final BigDecimal maxChargePoint = new BigDecimal(1000000);
 
-    private final LocalDateTime createDate;
+    private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    public Point(Long userId, BigDecimal point) {
-        this.userId = userId;
+    public Point(BigDecimal point) {
         this.point = point;
         this.createDate = LocalDateTime.now();
+    }
+    public Point() {
+        // JPA에서 사용하기 위한 기본 생성자
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public BigDecimal getPoints() {

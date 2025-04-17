@@ -29,7 +29,7 @@ public class PointService {
     public void charge(Long userId, BigDecimal chargeAmount) {
         Point point = pointRepository.findById(userId);
         if (point == null) {
-            throw new RuntimeException("User not fount");
+            throw new IllegalArgumentException("User not fount");
         }
 
         boolean result = point.canCharge(chargeAmount);
@@ -47,7 +47,7 @@ public class PointService {
     public void use(Long userId, BigDecimal useAmount) {
         Point point = pointRepository.findById(userId);
         if (point == null) {
-            throw new RuntimeException("User not fount");
+            throw new IllegalArgumentException("User not fount");
         }
 
         boolean result = point.canUse(useAmount);

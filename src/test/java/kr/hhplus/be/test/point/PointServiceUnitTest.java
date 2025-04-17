@@ -1,6 +1,7 @@
 package kr.hhplus.be.test.point;
 
 import kr.hhplus.be.point.entity.Point;
+import kr.hhplus.be.point.entity.PointHistory;
 import kr.hhplus.be.point.repository.PointHistoryRepository;
 import kr.hhplus.be.point.repository.PointRepository;
 import kr.hhplus.be.point.PointService;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +38,7 @@ class PointServiceUnitTest {
     void 포인트_조회_성공() {
         // given
         when(pointRepository.findById(userId))
-                .thenReturn(new Point(userId, initPoints));
+                .thenReturn(new Point(initPoints));
         // when
         BigDecimal points = pointService.getPoint(userId);
         // then
@@ -49,7 +51,7 @@ class PointServiceUnitTest {
     void 포인트_충전_성공() {
         // given
         when(pointRepository.findById(userId))
-                .thenReturn(new Point(userId, initPoints));
+                .thenReturn(new Point(initPoints));
         BigDecimal chargeAmount = new BigDecimal("500");
 
         // when
@@ -58,6 +60,7 @@ class PointServiceUnitTest {
         // then
         BigDecimal expectedPoints = initPoints.add(chargeAmount);
         Assertions.assertEquals(expectedPoints, pointService.getPoint(userId));
+        verify(pointHistoryRepository).save(any(PointHistory.class));
     }
 
     //TODO: 포인트를 사용할 수 있다.
@@ -65,7 +68,7 @@ class PointServiceUnitTest {
     void 포인트_사용_성공() {
         // given
         when(pointRepository.findById(userId))
-                .thenReturn(new Point(userId, initPoints));
+                .thenReturn(new Point(initPoints));
         BigDecimal useAmount = new BigDecimal("500");
 
         // when
@@ -74,6 +77,7 @@ class PointServiceUnitTest {
         // then
         BigDecimal expectedPoints = initPoints.subtract(useAmount);
         Assertions.assertEquals(expectedPoints, pointService.getPoint(userId));
+        verify(pointHistoryRepository).save(any(PointHistory.class));
     }
 
     //TODO: 포인트 충전 최대 한도가 넘으면 포인트를 충전할 수 없다.
@@ -81,7 +85,7 @@ class PointServiceUnitTest {
     void 포인트_충전_실패_최대한도초과() {
         // given
         when(pointRepository.findById(userId))
-                .thenReturn(new Point(userId, new BigDecimal("1000000")));
+                .thenReturn(new Point(new BigDecimal("1000000")));
         BigDecimal chargeAmount = new BigDecimal("1");
 
         // when & then
@@ -95,7 +99,7 @@ class PointServiceUnitTest {
     void 포인트_사용_실패_잔액초과() {
         // given
         when(pointRepository.findById(userId))
-                .thenReturn(new Point(userId, initPoints));
+                .thenReturn(new Point(initPoints));
         BigDecimal useAmount = new BigDecimal("2000");
 
         // when & then
