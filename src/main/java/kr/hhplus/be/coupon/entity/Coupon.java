@@ -48,4 +48,8 @@ public class Coupon {
         }
         this.issuedAmount++;
     }
+
+    public BigDecimal apply() {
+        return this.discountAmount;
+    }
 }
