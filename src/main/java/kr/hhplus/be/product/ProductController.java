@@ -26,8 +26,8 @@ public class ProductController {
     }
 
     // 상품 명세 조회
-    @GetMapping("/{productId}")
-    public Product getProduct(@PathVariable Long productId) {
-        return productService.getProduct(productId);
+    @GetMapping("/{productName}")
+    public Product getProduct(@PathVariable String productName) {
+        return productService.getProduct(productName);
     }
 }
