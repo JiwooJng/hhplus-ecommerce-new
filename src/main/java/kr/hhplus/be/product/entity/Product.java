@@ -36,4 +36,10 @@ public class Product {
     public void setStock(ProductStock productStock) {
         this.productStock = productStock;
     }
+    public boolean checkStock(Integer quantity) {
+        return this.productStock.check(quantity);
+    }
+    public BigDecimal calculateProductPrice(int quantity) {
+        return this.price.multiply(new BigDecimal(quantity));
+    }
 }

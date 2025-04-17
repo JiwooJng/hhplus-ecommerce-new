@@ -29,4 +29,8 @@ public class ProductStock {
         // JPA에서 사용하기 위한 기본 생성자
     }
 
+    public boolean check(Integer quantity) {
+        return this.quantity >= quantity;
+    }
+
 }

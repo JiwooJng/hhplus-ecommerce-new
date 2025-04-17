@@ -22,6 +22,7 @@ public class ProductService {
         Product product = new Product(name, price);
         ProductStock productStock = new ProductStock(product, quantity);
         product.setStock(productStock);
+        productStockRepository.save(productStock);
 
         return productRepository.save(product);
     }
@@ -31,5 +32,15 @@ public class ProductService {
 
     public Product getProduct(String name) {
         return productRepository.findByName(name);
+    }
+
+    public BigDecimal calculateProductPrice(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId);
+        return product.calculateProductPrice(quantity);
+    }
+
+    public boolean checkStock(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId);
+        return product.checkStock(quantity);
     }
 }
