@@ -1,9 +1,11 @@
 package kr.hhplus.be.coupon;
 
 
-import kr.hhplus.be.coupon.entity.CouponIssue;
+import kr.hhplus.be.coupon.entity.UserCoupon;
 import kr.hhplus.be.coupon.enumtype.CouponType;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/coupons")
@@ -16,13 +18,13 @@ public class CouponController {
 
     // 쿠폰 발행(시스템에)
     @PostMapping("/publish")
-    public void publishCoupon(@RequestBody CouponType type, @RequestBody Long amount) {
-        couponService.publish(type, amount);
+    public void publishCoupon(@RequestBody CouponType type, @RequestBody BigDecimal discountAmount, @RequestBody Long amount) {
+        couponService.publish(type, discountAmount, amount);
     }
 
     // 유저에게 쿠폰 발급
     @PostMapping("/issue/{couponId}")
-    public CouponIssue issueCoupon(@PathVariable Long couponId, @RequestBody Long userId) {
+    public UserCoupon issueCoupon(@PathVariable Long couponId, @RequestBody Long userId) {
         return couponService.issue(couponId, userId);
     }
 
