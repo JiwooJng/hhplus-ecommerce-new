@@ -1,18 +1,20 @@
-package kr.hhplus.be;
+package kr.hhplus.be.application;
 
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.coupon.CouponService;
 import kr.hhplus.be.coupon.entity.Coupon;
-import kr.hhplus.be.coupon.entity.UserCoupon;
 import kr.hhplus.be.order.OrderService;
 import kr.hhplus.be.order.entity.Order;
 import kr.hhplus.be.product.ProductService;
 import kr.hhplus.be.user.User;
 import kr.hhplus.be.user.UserService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+
+@Service
 public class OrderFacade {
     private final OrderService orderService;
     private final CouponService couponService;

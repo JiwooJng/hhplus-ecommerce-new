@@ -1,4 +1,4 @@
-package kr.hhplus.be;
+package kr.hhplus.be.application;
 
 import kr.hhplus.be.product.entity.Product;
 
