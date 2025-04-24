@@ -1,6 +1,7 @@
 package kr.hhplus.be.domain.product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository {
     Product findByName(String name);
@@ -9,5 +10,5 @@ public interface ProductRepository {
 
     Product save(Product product);
 
-    Product findByPessimisticLock(Long id);
+    Optional<Product> findByPessimisticLock(Long id);
 }
