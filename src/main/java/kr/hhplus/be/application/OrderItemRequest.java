@@ -1,18 +1,17 @@
 package kr.hhplus.be.application;
 
-import kr.hhplus.be.product.entity.Product;
+import kr.hhplus.be.domain.product.Product;
 
 public class OrderItemRequest {
-    private Long productId;
+    private Product product;
     private Integer quantity;
 
-    public OrderItemRequest(Long productId, Integer quantity) {
-        this.productId = productId;
+    public OrderItemRequest(Product product, Integer quantity) {
+        this.product = product;
         this.quantity = quantity;
     }
-
-    public Long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
     public Integer getQuantity() {
         return quantity;

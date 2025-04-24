@@ -1,4 +1,4 @@
-package kr.hhplus.be.order;
+package kr.hhplus.be.domain.order;
 
 public enum OrderStatus {
     WAITING,
