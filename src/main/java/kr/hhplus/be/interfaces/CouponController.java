@@ -1,8 +1,9 @@
-package kr.hhplus.be.coupon;
+package kr.hhplus.be.interfaces;
 
 
-import kr.hhplus.be.coupon.entity.UserCoupon;
-import kr.hhplus.be.coupon.enumtype.CouponType;
+import kr.hhplus.be.domain.coupon.CouponService;
+import kr.hhplus.be.domain.coupon.entity.UserCoupon;
+import kr.hhplus.be.domain.coupon.enumtype.CouponType;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -30,7 +31,7 @@ public class CouponController {
 
     // 유저가 쿠폰 사용
     @PostMapping("/use/{userId}")
-    public boolean useCoupon(@PathVariable Long userId, @RequestBody Long couponId) {
+    public UserCoupon useCoupon(@PathVariable Long userId, @RequestBody Long couponId) {
        return couponService.use(userId, couponId);
     }
 }
