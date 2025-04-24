@@ -1,24 +1,26 @@
-package kr.hhplus.be.payment;
+package kr.hhplus.be.domain.payment;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import kr.hhplus.be.order.entity.Order;
-import kr.hhplus.be.user.User;
+import jakarta.persistence.*;
+import kr.hhplus.be.domain.order.entity.Order;
+import kr.hhplus.be.domain.user.User;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class Payment {
     @Id @GeneratedValue
     private Long id;
     @ManyToOne
     private User user;
-    @OneToOne
+    @OneToOne @JoinColumn(name = "order_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Order order;
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
+    @Column(nullable = false)
     private LocalDateTime createDate;
+    @Column(nullable = true)
     private LocalDateTime cancelDate;
+    @Column(nullable = true)
     private LocalDateTime completeDate;
 
     public Payment(User user, Order order) {
@@ -26,6 +28,9 @@ public class Payment {
         this.order = order;
         this.paymentStatus = PaymentStatus.WAITING;
         this.createDate = LocalDateTime.now();
+    }
+    public Payment() {
+
     }
 
     public void complete() {

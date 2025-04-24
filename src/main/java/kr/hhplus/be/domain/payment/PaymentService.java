@@ -1,8 +1,11 @@
-package kr.hhplus.be.payment;
+package kr.hhplus.be.domain.payment;
 
-import kr.hhplus.be.order.entity.Order;
-import kr.hhplus.be.user.User;
+import kr.hhplus.be.domain.order.entity.Order;
+import kr.hhplus.be.domain.user.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -11,12 +14,9 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
+    @Transactional
     public Payment pay(User user, Order order) {
         Payment payment = new Payment(user, order);
-        return paymentRepository.save(payment);
-    }
-
-    public Payment complete(Payment payment) {
         payment.complete();
         return paymentRepository.save(payment);
     }

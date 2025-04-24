@@ -1,4 +1,4 @@
-package kr.hhplus.be.payment;
+package kr.hhplus.be.domain.payment;
 
 public enum PaymentStatus {
     WAITING,
