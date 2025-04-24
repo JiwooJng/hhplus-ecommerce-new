@@ -1,4 +1,4 @@
-package kr.hhplus.be.user;
+package kr.hhplus.be.domain.user;
 
 public interface UserRepository {
     User findById(Long userId);

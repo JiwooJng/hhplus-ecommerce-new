@@ -1,19 +1,22 @@
-package kr.hhplus.be.user;
+package kr.hhplus.be.domain.user;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import kr.hhplus.be.point.entity.Point;
 
 import java.time.LocalDateTime;
 
 @Entity
 public class User {
     @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private LocalDateTime createdAt;
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     public User(String name) {

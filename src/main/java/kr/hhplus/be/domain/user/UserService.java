@@ -1,5 +1,8 @@
-package kr.hhplus.be.user;
+package kr.hhplus.be.domain.user;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class UserService {
     private final UserRepository userRepository;
 
@@ -9,11 +12,14 @@ public class UserService {
 
     public User registerUser(String name) {
         User user = new User(name);
-
         return userRepository.save(user);
     }
     public User findById(Long userId) {
-        return userRepository.findById(userId);
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        return user;
     }
 
 
