@@ -1,10 +1,9 @@
 package kr.hhplus.be.test.point;
 
-import kr.hhplus.be.point.entity.Point;
-import kr.hhplus.be.point.entity.PointHistory;
-import kr.hhplus.be.point.repository.PointHistoryRepository;
-import kr.hhplus.be.point.repository.PointRepository;
-import kr.hhplus.be.point.PointService;
+import kr.hhplus.be.domain.point.entity.Point;
+import kr.hhplus.be.domain.point.entity.PointHistory;
+import kr.hhplus.be.domain.point.repository.PointRepository;
+import kr.hhplus.be.domain.point.PointService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,8 +23,6 @@ class PointServiceUnitTest {
 
     @Mock
     private PointRepository pointRepository;
-    @Mock
-    private PointHistoryRepository pointHistoryRepository;
     @InjectMocks
     private PointService pointService;
 
@@ -60,7 +57,7 @@ class PointServiceUnitTest {
         // then
         BigDecimal expectedPoints = initPoints.add(chargeAmount);
         Assertions.assertEquals(expectedPoints, pointService.getPoint(userId));
-        verify(pointHistoryRepository).save(any(PointHistory.class));
+        verify(pointRepository).saveHistory(any(PointHistory.class));
     }
 
     //TODO: 포인트를 사용할 수 있다.
@@ -77,7 +74,7 @@ class PointServiceUnitTest {
         // then
         BigDecimal expectedPoints = initPoints.subtract(useAmount);
         Assertions.assertEquals(expectedPoints, pointService.getPoint(userId));
-        verify(pointHistoryRepository).save(any(PointHistory.class));
+        verify(pointRepository).saveHistory(any(PointHistory.class));
     }
 
     //TODO: 포인트 충전 최대 한도가 넘으면 포인트를 충전할 수 없다.

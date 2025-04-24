@@ -1,5 +1,6 @@
-package kr.hhplus.be.point;
+package kr.hhplus.be.interfaces;
 
+import kr.hhplus.be.domain.point.PointService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;

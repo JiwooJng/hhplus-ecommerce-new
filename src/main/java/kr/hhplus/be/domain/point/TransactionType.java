@@ -1,4 +1,4 @@
-package kr.hhplus.be.point;
+package kr.hhplus.be.domain.point;
 
 public enum TransactionType {
     CHARGE,
