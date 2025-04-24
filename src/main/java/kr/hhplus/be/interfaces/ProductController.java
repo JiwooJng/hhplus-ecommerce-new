@@ -1,7 +1,8 @@
-package kr.hhplus.be.product;
+package kr.hhplus.be.interfaces;
 
 
-import kr.hhplus.be.product.entity.Product;
+import kr.hhplus.be.domain.product.Product;
+import kr.hhplus.be.domain.product.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

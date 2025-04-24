@@ -1,6 +1,4 @@
-package kr.hhplus.be.product.repository;
-
-import kr.hhplus.be.product.entity.Product;
+package kr.hhplus.be.domain.product;
 
 import java.util.List;
 
@@ -11,4 +9,5 @@ public interface ProductRepository {
 
     Product save(Product product);
 
+    Product findByPessimisticLock(Long id);
 }
