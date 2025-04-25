@@ -16,7 +16,8 @@ public interface CouponRepository {
     UserCoupon saveUserCoupon(UserCoupon userCoupon);
     void deleteUsedCoupon(UserCoupon userCoupon);
 
-    Optional<Coupon> findByPessimisticLock(Long couponId);
+    Optional<Coupon> findByIdWithPessimisticLock(Long couponId);
 
     void flush();
+
 }

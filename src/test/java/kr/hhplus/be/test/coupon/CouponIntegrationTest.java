@@ -1,19 +1,15 @@
 package kr.hhplus.be.test.coupon;
 
-import jakarta.persistence.NoResultException;
 import kr.hhplus.be.domain.coupon.CouponService;
 import kr.hhplus.be.domain.coupon.entity.Coupon;
 import kr.hhplus.be.domain.coupon.enumtype.CouponType;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +24,6 @@ public class CouponIntegrationTest {
     CouponRepository couponRepository;
 
     @Test
-    @Transactional
     void 쿠폰_발급_성공() {
         Coupon coupon = new Coupon(CouponType.선착순_쿠폰, new BigDecimal("5000"), 10L);
         couponRepository.save(coupon);
@@ -57,7 +52,7 @@ public class CouponIntegrationTest {
             final long userId = i + 1;
             executorService.submit(() -> {
                 try {
-                    couponService.increaseIssuedAmount(coupon.getId(), userId);
+                    couponService.issueConcurrent(coupon.getId(), userId);
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
                 } finally {
@@ -69,9 +64,9 @@ public class CouponIntegrationTest {
 
         // Then
         // 쿠폰 발급 결과 확인
-        Optional<Coupon> updateCoupon = couponRepository.findByPessimisticLock(coupon.getId());
-        assertThat(updateCoupon).isPresent(); // 쿠폰이 존재해야 함
-        assertThat(5L).isEqualTo(updateCoupon.get().getIssuedAmount()); // 쿠폰 발급 수량이 5개여야 함
+        Coupon updateCoupon = couponRepository.findById(coupon.getId());
+//        assertThat(updateCoupon).isPresent(); // 쿠폰이 존재해야 함
+        assertThat(5L).isEqualTo(updateCoupon.getIssuedAmount()); // 쿠폰 발급 수량이 5개여야 함
 
     }
 

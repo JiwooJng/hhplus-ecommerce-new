@@ -55,9 +55,9 @@ public class CouponService {
         return couponRepository.saveUserCoupon(new UserCoupon(userId, coupon)); // 쿠폰 발급 및 저장
     }
     @Transactional
-    public void increaseIssuedAmount(Long couponId, Long userId) {
+    public void issueConcurrent(Long couponId, Long userId) {
         // 쿠폰 발급 수량 증가
-        Coupon coupon = couponRepository.findByPessimisticLock(couponId)
+        Coupon coupon = couponRepository.findByIdWithPessimisticLock(couponId)
                 .orElseThrow(NoResultException::new);
         coupon.issue();
         couponRepository.saveUserCoupon(new UserCoupon(userId, coupon));
