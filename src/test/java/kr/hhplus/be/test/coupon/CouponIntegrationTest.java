@@ -50,7 +50,7 @@ public class CouponIntegrationTest {
         // When
         for (int i = 0; i < threadCount; i++) {
             final long userId = i + 1;
-            executorService.submit(() -> {
+            executorService.execute(() -> {
                 try {
                     couponService.issueConcurrent(coupon.getId(), userId);
                 } catch (Exception e) {
@@ -61,12 +61,12 @@ public class CouponIntegrationTest {
             });
         }
         latch.await(); // 모든 스레드가 작업을 완료할 때까지 대기
-
+        executorService.shutdown(); // ExecutorService 종료
         // Then
         // 쿠폰 발급 결과 확인
         Coupon updateCoupon = couponRepository.findById(coupon.getId());
 //        assertThat(updateCoupon).isPresent(); // 쿠폰이 존재해야 함
-        assertThat(5L).isEqualTo(updateCoupon.getIssuedAmount()); // 쿠폰 발급 수량이 5개여야 함
+        assertThat(updateCoupon.getIssuedAmount()).isEqualTo(5L); // 쿠폰 발급 수량이 5개여야 함
 
     }
 
