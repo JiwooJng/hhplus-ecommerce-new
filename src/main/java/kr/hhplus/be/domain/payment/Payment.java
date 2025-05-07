@@ -11,8 +11,10 @@ public class Payment {
     @Id @GeneratedValue
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
-    @OneToOne @JoinColumn(name = "order_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @OneToOne
+    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Order order;
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;

@@ -2,6 +2,7 @@ package kr.hhplus.be.domain.point;
 
 import kr.hhplus.be.domain.point.entity.Point;
 import kr.hhplus.be.domain.point.entity.PointHistory;
+import kr.hhplus.be.domain.point.enumtype.TransactionType;
 import kr.hhplus.be.domain.point.repository.PointRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
