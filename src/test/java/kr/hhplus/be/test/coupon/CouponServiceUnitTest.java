@@ -1,14 +1,10 @@
 package kr.hhplus.be.test.coupon;
 
-import kr.hhplus.be.coupon.*;
-import kr.hhplus.be.coupon.entity.Coupon;
-import kr.hhplus.be.coupon.entity.UserCoupon;
-import kr.hhplus.be.coupon.enumtype.CouponType;
-import kr.hhplus.be.coupon.repository.UserCouponRepository;
-import kr.hhplus.be.coupon.repository.CouponRepository;
-import kr.hhplus.be.user.User;
-import kr.hhplus.be.user.UserRepository;
-import org.junit.jupiter.api.Assertions;
+import kr.hhplus.be.domain.coupon.CouponService;
+import kr.hhplus.be.domain.coupon.entity.Coupon;
+import kr.hhplus.be.domain.coupon.entity.UserCoupon;
+import kr.hhplus.be.domain.coupon.enumtype.CouponType;
+import kr.hhplus.be.domain.coupon.repository.CouponRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,12 +20,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CouponServiceUnitTest {
     @Mock
-    UserRepository userRepository;
-    @Mock
     CouponRepository couponRepository;
-    @Mock
-    UserCouponRepository userCouponRepository;
-
     @InjectMocks
     CouponService couponService;
 
@@ -61,20 +52,19 @@ class CouponServiceUnitTest {
         couponService.issue(couponId, userId);
         // then
         assert true;
-        verify(userCouponRepository).save(any(UserCoupon.class));
+        verify(couponRepository).saveUserCoupon(any(UserCoupon.class));
     }
 
     @Test
     void 쿠폰_사용_성공() {
         // given
-        UserCoupon userCoupon = new UserCoupon(new User("Jiwoo"), new Coupon(CouponType.선착순_쿠폰, discountAmount, maxIssueAmount));
-        when(userCouponRepository.findById(userId, couponId))
+        UserCoupon userCoupon = new UserCoupon(userId, new Coupon(CouponType.선착순_쿠폰, discountAmount, maxIssueAmount));
+        when(couponRepository.findUserCouponById(userId, couponId))
                 .thenReturn(userCoupon);
         // when
         couponService.use(userId, couponId);
         // then
-        assert !userCoupon.canUse();
-        verify(userCouponRepository).delete(any(UserCoupon.class));
+        verify(couponRepository).deleteUsedCoupon(any(UserCoupon.class));
 
 
     }

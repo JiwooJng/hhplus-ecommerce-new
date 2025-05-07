@@ -1,10 +1,10 @@
 package kr.hhplus.be.test.payment;
 
-import kr.hhplus.be.order.entity.Order;
-import kr.hhplus.be.payment.Payment;
-import kr.hhplus.be.payment.PaymentRepository;
-import kr.hhplus.be.payment.PaymentService;
-import kr.hhplus.be.user.User;
+import kr.hhplus.be.domain.order.entity.Order;
+import kr.hhplus.be.domain.payment.Payment;
+import kr.hhplus.be.domain.payment.PaymentRepository;
+import kr.hhplus.be.domain.payment.PaymentService;
+import kr.hhplus.be.domain.user.User;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +43,7 @@ public class PaymentServiceUnitTest {
         // given
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
         // when
-        Payment completePayment = paymentService.complete(payment);
+        Payment completePayment = paymentService.pay(user, order);
         // then
         assertEquals(payment, completePayment);
 

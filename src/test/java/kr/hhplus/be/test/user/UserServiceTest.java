@@ -1,8 +1,8 @@
 package kr.hhplus.be.test.user;
 
-import kr.hhplus.be.user.User;
-import kr.hhplus.be.user.UserRepository;
-import kr.hhplus.be.user.UserService;
+import kr.hhplus.be.domain.user.User;
+import kr.hhplus.be.domain.user.UserRepository;
+import kr.hhplus.be.domain.user.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
