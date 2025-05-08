@@ -3,6 +3,7 @@ package kr.hhplus.be.domain.product;
 
 import kr.hhplus.be.application.OrderItemRequest;
 import kr.hhplus.be.domain.order.entity.OrderItem;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,8 @@ public class ProductService {
 
         return productRepository.save(product);
     }
+
+    @Cacheable(value = "products", key = "#productId")
     public List<Product> getAll() {
         return productRepository.findAll();
     }
