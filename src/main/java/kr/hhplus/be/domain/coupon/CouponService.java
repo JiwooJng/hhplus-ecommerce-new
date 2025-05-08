@@ -1,6 +1,7 @@
 package kr.hhplus.be.domain.coupon;
 
 import jakarta.persistence.NoResultException;
+import kr.hhplus.be.RedissonLock;
 import kr.hhplus.be.domain.coupon.entity.Coupon;
 import kr.hhplus.be.domain.coupon.entity.UserCoupon;
 import kr.hhplus.be.domain.coupon.enumtype.CouponType;
@@ -62,6 +63,14 @@ public class CouponService {
         coupon.issue();
         couponRepository.saveUserCoupon(new UserCoupon(userId, coupon));
 
+    }
+
+    @RedissonLock(value = "#couponId")
+    @Transactional
+    public void issueRedisson(Long couponId, Long userId) {
+        Coupon coupon = couponRepository.findById(couponId);
+        coupon.issue();
+        couponRepository.saveUserCoupon(new UserCoupon(userId, coupon));
     }
 
 
