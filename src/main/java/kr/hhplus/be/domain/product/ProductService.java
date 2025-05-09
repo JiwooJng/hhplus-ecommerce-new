@@ -19,13 +19,15 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Product registerProduct(String name, BigDecimal price, Long stock) {
         Product product = new Product(name, price, stock);
 
         return productRepository.save(product);
     }
 
-    @Cacheable(value = "products", key = "#productId")
+    @Cacheable(value = "products")
+    @Transactional(readOnly = true)
     public List<Product> getAll() {
         return productRepository.findAll();
     }

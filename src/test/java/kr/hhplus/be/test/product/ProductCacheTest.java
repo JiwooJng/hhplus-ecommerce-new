@@ -1,9 +1,10 @@
 package kr.hhplus.be.test.product;
 
-
-import kr.hhplus.be.domain.product.Product;
 import kr.hhplus.be.domain.product.ProductRepository;
 import kr.hhplus.be.domain.product.ProductService;
+import kr.hhplus.be.server.DatabaseCleanup;
+import kr.hhplus.be.server.RedisCleanup;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,11 +25,21 @@ public class ProductCacheTest {
     @MockitoSpyBean
     private ProductRepository productRepository;
 
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
+    @Autowired
+    private RedisCleanup redisCleanup;
+
+    @BeforeEach
+    void setUp() {
+        databaseCleanup.truncateAllTables();
+        redisCleanup.flushAll();
+    }
 
     @Test
     void 상품_조회_캐시_테스트() {
 
-        productRepository.save(new Product("망고", BigDecimal.valueOf(30000), 10L));
+        productService.registerProduct("망고", BigDecimal.valueOf(30000), 10L);
 
         productService.getAll();
         productService.getAll();
