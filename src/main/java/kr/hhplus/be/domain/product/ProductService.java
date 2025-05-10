@@ -3,6 +3,7 @@ package kr.hhplus.be.domain.product;
 
 import kr.hhplus.be.application.OrderItemRequest;
 import kr.hhplus.be.domain.order.entity.OrderItem;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,15 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Product registerProduct(String name, BigDecimal price, Long stock) {
         Product product = new Product(name, price, stock);
 
         return productRepository.save(product);
     }
+
+    @Cacheable(value = "products")
+    @Transactional(readOnly = true)
     public List<Product> getAll() {
         return productRepository.findAll();
     }

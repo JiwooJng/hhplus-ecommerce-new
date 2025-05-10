@@ -34,8 +34,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-
-    // DB
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+	implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
 	runtimeOnly("com.mysql:mysql-connector-j")
 
     // Test
@@ -44,6 +45,14 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	// redis test
+	testImplementation("org.testcontainers:testcontainers:1.19.0")
+	testImplementation("com.redis.testcontainers:testcontainers-redis:1.6.4")
+
+	// embedded redis
+	testImplementation("it.ozimov:embedded-redis:0.7.2")
+	testImplementation("org.redisson:redisson-spring-boot-starter:3.20.1")
 }
 
 tasks.withType<Test> {
