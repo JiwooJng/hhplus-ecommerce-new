@@ -2,11 +2,13 @@ package kr.hhplus.be.domain.product;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-public class Product {
+public class Product implements Serializable {
     @Id @GeneratedValue
+    @Column(name = "product_id")
     private Long id;
     @Column(nullable = false)
     private String name;
