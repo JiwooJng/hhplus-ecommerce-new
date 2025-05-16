@@ -23,15 +23,12 @@ public class CouponRedisServiceTest {
     private StringRedisTemplate redisTemplate;
 
     private final String COUPON_WAITING_KEY = "coupon:waiting";
+    private final Long couponId = 1L;
+    private final Long userId = 1L;
+    String value = String.format("%s:%s", couponId, userId);
 
     @Test
-    public void 쿠폰발급요청_대기열_추가_성공() {
-        // given
-        Long couponId = 1L;
-        Long userId = 1L;
-
-        String value = String.format("%s:%s", couponId, userId);
-
+    public void 쿠폰발급요청_대기열에_없는_요청이면_추가_성공() {
         Double score = redisTemplate.opsForZSet().score(COUPON_WAITING_KEY, value);
         if (score != null) {
             redisTemplate.opsForZSet().remove(COUPON_WAITING_KEY, value);
@@ -39,6 +36,18 @@ public class CouponRedisServiceTest {
         boolean isAdded = couponRedisService.requestIssueCoupon(couponId, userId);
 
         assertThat(isAdded).isTrue();
+
+    }
+
+    @Test
+    public void 쿠폰발급요청_대기열에_존재하는_요청이면_추가_실패() {
+        Double score = redisTemplate.opsForZSet().score(COUPON_WAITING_KEY, value);
+        if (score == null) {
+            redisTemplate.opsForZSet().add(COUPON_WAITING_KEY, value, 0);
+        }
+        boolean isAdded = couponRedisService.requestIssueCoupon(couponId, userId);
+
+        assertThat(isAdded).isFalse();
 
     }
 
