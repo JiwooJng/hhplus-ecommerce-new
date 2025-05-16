@@ -1,6 +1,7 @@
 package kr.hhplus.be.interfaces;
 
 
+import kr.hhplus.be.CouponRedisService;
 import kr.hhplus.be.domain.coupon.CouponService;
 import kr.hhplus.be.domain.coupon.entity.UserCoupon;
 import kr.hhplus.be.domain.coupon.enumtype.CouponType;
@@ -12,9 +13,11 @@ import java.math.BigDecimal;
 @RequestMapping("/api/coupons")
 public class CouponController {
     private final CouponService couponService;
+    private final CouponRedisService couponRedisService;
 
-    public CouponController(CouponService couponService) {
+    public CouponController(CouponService couponService, CouponRedisService couponRedisService) {
         this.couponService = couponService;
+        this.couponRedisService = couponRedisService;
     }
 
     // 쿠폰 발행(시스템에)
@@ -33,5 +36,15 @@ public class CouponController {
     @PostMapping("/use/{userId}")
     public UserCoupon useCoupon(@PathVariable Long userId, @RequestBody Long couponId) {
        return couponService.use(userId, couponId);
+    }
+
+    @PostMapping("/redis/coupon/publish")
+    public void publishCouponRedis(@RequestBody CouponType type, @RequestBody Long amount) {
+        couponRedisService.publishCouponRedis(type, amount);
+    }
+
+    @PostMapping("/redis/coupon/requestIssue")
+    public boolean requestIssueCoupon(@RequestBody Long couponId, @RequestBody Long userId) {
+        return couponRedisService.requestIssueCoupon(couponId, userId);
     }
 }
