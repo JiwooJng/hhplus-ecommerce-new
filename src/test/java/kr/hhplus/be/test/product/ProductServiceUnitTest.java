@@ -1,7 +1,7 @@
 package kr.hhplus.be.test.product;
 
 import kr.hhplus.be.domain.product.Product;
-import kr.hhplus.be.domain.product.ProductRepository;
+import kr.hhplus.be.domain.product.repository.ProductRepository;
 import kr.hhplus.be.domain.product.ProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
