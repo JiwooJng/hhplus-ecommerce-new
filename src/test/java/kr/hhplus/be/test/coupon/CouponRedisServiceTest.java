@@ -1,7 +1,7 @@
 package kr.hhplus.be.test.coupon;
 
 import kr.hhplus.be.domain.coupon.CouponService;
-import kr.hhplus.be.domain.coupon.repository.CacheRepository;
+import kr.hhplus.be.domain.coupon.repository.CouponCacheRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CouponRedisServiceTest {
     @Autowired
     private CouponRepository couponRepository;
     @Autowired
-    private CacheRepository cacheRepository;
+    private CouponCacheRepository cacheRepository;
 
     private final String COUPON_WAITING_KEY = "coupon:waiting";
     private final Long couponId = 1L;

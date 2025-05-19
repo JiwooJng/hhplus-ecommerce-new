@@ -1,7 +1,7 @@
 package kr.hhplus.be.infrastructure.coupon;
 
 
-import kr.hhplus.be.domain.coupon.repository.CacheRepository;
+import kr.hhplus.be.domain.coupon.repository.CouponCacheRepository;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,10 +9,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
-public class RedisCacheRepository implements CacheRepository {
+public class CouponCacheRepositoryImpl implements CouponCacheRepository {
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public RedisCacheRepository(RedisTemplate<String, Object> redisTemplate) {
+    public CouponCacheRepositoryImpl(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

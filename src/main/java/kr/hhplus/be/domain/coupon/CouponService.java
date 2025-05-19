@@ -5,7 +5,7 @@ import kr.hhplus.be.RedissonLock;
 import kr.hhplus.be.domain.coupon.entity.Coupon;
 import kr.hhplus.be.domain.coupon.entity.UserCoupon;
 import kr.hhplus.be.domain.coupon.enumtype.CouponType;
-import kr.hhplus.be.domain.coupon.repository.CacheRepository;
+import kr.hhplus.be.domain.coupon.repository.CouponCacheRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +20,11 @@ public class CouponService {
     private static final String COUPON_WAITING_KEY = "coupon:waiting";
 
     private final CouponRepository couponRepository;
-    private final CacheRepository cacheRepository;
+    private final CouponCacheRepository couponCacheRepository;
 
-    public CouponService(CouponRepository couponRepository, CacheRepository cacheRepository) {
+    public CouponService(CouponRepository couponRepository, CouponCacheRepository cacheRepository) {
         this.couponRepository = couponRepository;
-        this.cacheRepository = cacheRepository;
+        this.couponCacheRepository = cacheRepository;
     }
 
     public void publish(CouponType type, BigDecimal discountAmount, Long amount) {
@@ -85,22 +85,22 @@ public class CouponService {
     // Cache
     public void publishCouponRedis(CouponType couponType, Long amount) {
         String couponKey = COUPON_KEY + ":" + couponType;
-        cacheRepository.save(couponKey, String.valueOf(amount));
+        couponCacheRepository.save(couponKey, String.valueOf(amount));
     }
     public boolean requestIssueCoupon(Long couponId, Long userId) {
         String value = String.format("%s:%s", couponId, userId); // couponId:userId
         double score = Instant.now().toEpochMilli(); // 요청 시간
         // Redis에 쿠폰 발급 요청을 저장하는 로직
-        Boolean isAdded = cacheRepository.saveIfAbsent(COUPON_WAITING_KEY, value, score);
+        Boolean isAdded = couponCacheRepository.saveIfAbsent(COUPON_WAITING_KEY, value, score);
         return Boolean.TRUE.equals(isAdded);
     }
     public boolean issueCoupon(Long couponId) {
         String couponKey = COUPON_KEY + ":" + couponId;
-        long remainCouponAmount = cacheRepository.decrement(couponKey);
+        long remainCouponAmount = couponCacheRepository.decrement(couponKey);
         return remainCouponAmount >= 0;
     }
     public void issueProcessBatch(long batchSize) {
-        Set<String> users = cacheRepository.fetchFromSet(COUPON_WAITING_KEY, batchSize);
+        Set<String> users = couponCacheRepository.fetchFromSet(COUPON_WAITING_KEY, batchSize);
         // 쿠폰 발급
         for (String requestUserCoupon : users) {
             // "couponId:userId" 형식에서 분리
@@ -120,7 +120,7 @@ public class CouponService {
                 couponRepository.saveUserCoupon(userCoupon);
 
                 // ZSet에서 사용자 제거
-                cacheRepository.removeFromSet(COUPON_WAITING_KEY, requestUserCoupon);
+                couponCacheRepository.removeFromSet(COUPON_WAITING_KEY, requestUserCoupon);
             } else {
                 // 쿠폰 남은 수량이 부족하면 처리 중단
                 break;
