@@ -2,7 +2,7 @@ package kr.hhplus.be.infrastructure.product;
 
 import jakarta.persistence.NoResultException;
 import kr.hhplus.be.domain.product.Product;
-import kr.hhplus.be.domain.product.ProductRepository;
+import kr.hhplus.be.domain.product.repository.ProductRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
