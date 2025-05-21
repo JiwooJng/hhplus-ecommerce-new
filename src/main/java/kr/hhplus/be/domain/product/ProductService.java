@@ -2,8 +2,6 @@ package kr.hhplus.be.domain.product;
 
 
 import kr.hhplus.be.application.OrderItemRequest;
-import kr.hhplus.be.domain.order.entity.OrderItem;
-import kr.hhplus.be.domain.product.repository.ProductCacheRepository;
 import kr.hhplus.be.domain.product.repository.ProductRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,11 +19,9 @@ public class ProductService {
     private final String SALES_KEY = "product:sales";
 
     private final ProductRepository productRepository;
-    private final ProductCacheRepository productCacheRepository;
 
-    public ProductService(ProductRepository productRepository, ProductCacheRepository productCacheRepository) {
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.productCacheRepository = productCacheRepository;
     }
 
     @Transactional
@@ -47,7 +43,8 @@ public class ProductService {
 
     public void checkStock(List<OrderItemRequest> orderItemRequest) {
         for (OrderItemRequest itemRequest : orderItemRequest) {
-            Product product = itemRequest.getProduct();
+            Long productId = itemRequest.getProductId();
+            Product product = productRepository.findById(productId);
             if (product == null) {
                 throw new IllegalArgumentException("상품이 존재하지 않습니다.");
             }
@@ -58,10 +55,11 @@ public class ProductService {
         }
     }
 
-    public void decreaseStock(List<OrderItem> orderItems) {
-        for (OrderItem orderItem : orderItems) {
-            Product product = orderItem.getProduct();
-            Integer quantity = orderItem.getQuantity();
+    public void decreaseStock(List<OrderItemRequest> orderItemRequest) {
+        for (OrderItemRequest itemRequest : orderItemRequest) {
+            Long productId = itemRequest.getProductId();
+            Product product = productRepository.findById(productId);
+            Integer quantity = itemRequest.getQuantity();
 
             product.decreaseStock(quantity);
         }
@@ -80,17 +78,17 @@ public class ProductService {
 
         // 상품 정보가 Redis에 존재하지 않는 경우
         // ZSet에 상품 ID와 판매량을 추가
-        boolean isAdded = productCacheRepository.saveIfAbsent(todaySalesKey, productId.toString(), salesAmount);
+        boolean isAdded = productRepository.saveIfAbsent(todaySalesKey, productId.toString(), salesAmount);
         if (!isAdded) {
             // 상품 정보가 Redis에 존재하는 경우
             // ZSet의 판매량을 증가
-            productCacheRepository.increment(todaySalesKey, productId.toString(), salesAmount);
+            productRepository.increment(todaySalesKey, productId.toString(), salesAmount);
         }
     }
     public Set<String> getTopProductsByDate(LocalDate date, int topN) {
         // ZSet에서 판매량이 가장 높은 상품 ID를 가져옴
         String todaySalesKey = SALES_KEY + date;
-        return productCacheRepository.getBestSellers(todaySalesKey, 0, topN - 1);
+        return productRepository.getBestSellers(todaySalesKey, 0, topN - 1);
     }
 
     public Set<String> getTopProductForDays(int days, int topN) {
@@ -101,11 +99,11 @@ public class ProductService {
         }
 
         String tempKey = SALES_KEY + "temp";
-        productCacheRepository.unionAndStore(topSalesKey.get(0), topSalesKey.subList(1, topSalesKey.size()), tempKey);
+        productRepository.unionAndStore(topSalesKey.get(0), topSalesKey.subList(1, topSalesKey.size()), tempKey);
 
-        Set<String> topProductsForDays = productCacheRepository.getBestSellers(tempKey, 0, topN - 1);
+        Set<String> topProductsForDays = productRepository.getBestSellers(tempKey, 0, topN - 1);
         // 임시 키 삭제
-        productCacheRepository.delete(tempKey);
+        productRepository.delete(tempKey);
 
         return topProductsForDays;
     }

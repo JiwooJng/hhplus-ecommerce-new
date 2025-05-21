@@ -2,7 +2,7 @@ package kr.hhplus.be.domain.coupon.repository;
 
 import java.util.Set;
 
-public interface CouponCacheRepository {
+public interface CouponRequestRepository {
 
     void save(String key, Object value);
 

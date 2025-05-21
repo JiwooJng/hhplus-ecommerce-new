@@ -5,7 +5,7 @@ import kr.hhplus.be.RedissonLock;
 import kr.hhplus.be.domain.coupon.entity.Coupon;
 import kr.hhplus.be.domain.coupon.entity.UserCoupon;
 import kr.hhplus.be.domain.coupon.enumtype.CouponType;
-import kr.hhplus.be.domain.coupon.repository.CouponCacheRepository;
+import kr.hhplus.be.domain.coupon.repository.CouponRequestRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +20,9 @@ public class CouponService {
     private static final String COUPON_WAITING_KEY = "coupon:waiting";
 
     private final CouponRepository couponRepository;
-    private final CouponCacheRepository couponCacheRepository;
+    private final CouponRequestRepository couponCacheRepository;
 
-    public CouponService(CouponRepository couponRepository, CouponCacheRepository cacheRepository) {
+    public CouponService(CouponRepository couponRepository, CouponRequestRepository cacheRepository) {
         this.couponRepository = couponRepository;
         this.couponCacheRepository = cacheRepository;
     }

@@ -2,7 +2,7 @@ package kr.hhplus.be.test.product;
 
 
 import kr.hhplus.be.domain.product.ProductService;
-import kr.hhplus.be.domain.product.repository.ProductCacheRepository;
+import kr.hhplus.be.domain.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +19,7 @@ public class ProductRedisServiceTest {
     @Autowired
     private ProductService productService;
     @Autowired
-    private ProductCacheRepository productCacheRepository;
+    private ProductRepository productRepository;
 
     private final String SALES_KEY = "product:sales";
 
@@ -28,13 +28,13 @@ public class ProductRedisServiceTest {
         // given
         long productId = 1L;
         long salesAmount = 10L;
-        Double score = productCacheRepository.getScore(SALES_KEY + LocalDate.now(), Long.toString(productId));
+        Double score = productRepository.getScore(SALES_KEY + LocalDate.now(), Long.toString(productId));
 
         if (score == null) {
-            productCacheRepository.saveIfAbsent(SALES_KEY + LocalDate.now(), Long.toString(productId), 20);
+            productRepository.saveIfAbsent(SALES_KEY + LocalDate.now(), Long.toString(productId), 20);
         }
         productService.updateProductInfo(productId, salesAmount);
-        Double updateScore = productCacheRepository.getScore(SALES_KEY + LocalDate.now(), Long.toString(productId));
+        Double updateScore = productRepository.getScore(SALES_KEY + LocalDate.now(), Long.toString(productId));
 
         assertThat(updateScore).isEqualTo(30.0);
     }
