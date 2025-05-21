@@ -1,6 +1,6 @@
 package kr.hhplus.be.test.product;
 
-import kr.hhplus.be.domain.product.ProductRepository;
+import kr.hhplus.be.domain.product.repository.ProductRepository;
 import kr.hhplus.be.domain.product.ProductService;
 import kr.hhplus.be.server.DatabaseCleanup;
 import kr.hhplus.be.server.RedisCleanup;
