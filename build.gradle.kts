@@ -37,6 +37,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 	implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
+	implementation ("org.springframework.boot:spring-boot-starter-cache")
+	implementation ("org.springframework.kafka:spring-kafka")
+
 	runtimeOnly("com.mysql:mysql-connector-j")
 
     // Test

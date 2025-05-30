@@ -11,6 +11,7 @@ spring:
       connection-timeout: 10000
       max-lifetime: 60000
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     open-in-view: false
     generate-ddl: true
@@ -21,11 +22,25 @@ spring:
       hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
       hibernate.timezone.default_storage: NORMALIZE_UTC
       hibernate.jdbc.time_zone: UTC
+
   data:
     redis:
       host: localhost
       port: 6379
       timeout: 2s
+
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: test-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
 ---
 spring.config.activate.on-profile: local, test
 
