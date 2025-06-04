@@ -1,9 +1,9 @@
 package kr.hhplus.be.domain.payment;
 
-import kr.hhplus.be.domain.order.entity.Order;
-import kr.hhplus.be.domain.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Service
 public class PaymentService {
@@ -15,8 +15,8 @@ public class PaymentService {
     }
 
     @Transactional
-    public Payment pay(User user, Order order) {
-        Payment payment = new Payment(user, order);
+    public Payment pay(BigDecimal amount) {
+        Payment payment = new Payment(amount);
         payment.complete();
         return paymentRepository.save(payment);
     }
