@@ -1,14 +1,13 @@
 # ----------------------------
 # Build Stage
 # ----------------------------
-FROM gradle:8.5-jdk17 AS build
+FROM gradle:8.11.1-jdk17 AS build
 WORKDIR /app
-COPY . /app
 
 # 의존성 캐싱을 위해 먼저 build.gradle* 만 복사하는 최적화도 가능
-# COPY build.gradle.kts settings.gradle.kts ./
-# RUN gradle build --no-daemon || return 0
-# COPY . .
+COPY build.gradle.kts settings.gradle.kts ./
+RUN gradle build --no-daemon || true
+COPY . .
 RUN gradle build --no-daemon
 
 # ----------------------------
@@ -22,6 +21,7 @@ COPY --from=build /app/build/libs/*.jar app.jar
 
 # 환경변수 (선택)
 ENV JAVA_OPTS=""
+ENV GRADLE_OPTS="-Dorg.gradle.daemon=false"
 
 EXPOSE 8080
 
