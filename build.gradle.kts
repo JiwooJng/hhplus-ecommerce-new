@@ -37,8 +37,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 	implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
-	implementation ("org.springframework.boot:spring-boot-starter-cache")
-	implementation ("org.springframework.kafka:spring-kafka")
+	implementation("org.springframework.boot:spring-boot-starter-cache")
+	implementation("org.springframework.kafka:spring-kafka")
 
 	runtimeOnly("com.mysql:mysql-connector-j")
 
@@ -53,9 +53,6 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers:1.19.0")
 	testImplementation("com.redis.testcontainers:testcontainers-redis:1.6.4")
 
-	// embedded redis
-	testImplementation("it.ozimov:embedded-redis:0.7.2")
-	testImplementation("org.redisson:redisson-spring-boot-starter:3.20.1")
 }
 
 tasks.withType<Test> {
